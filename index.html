@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Defender | Advanced CSS Game</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Game Header -->
+        <header class="game-header">
+            <h1><i class="fas fa-atom"></i> QUANTUM DEFENDER</h1>
+            <p class="subtitle">Protect the reactor core from quantum anomalies</p>
+        </header>
+
+        <!-- Game Stats Panel -->
+        <div class="stats-panel">
+            <div class="stat">
+                <span class="stat-label">ENERGY</span>
+                <div class="energy-bar">
+                    <div class="energy-fill" id="energy-fill"></div>
+                </div>
+                <span class="stat-value" id="energy-value">100%</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">SCORE</span>
+                <span class="stat-value" id="score-value">0</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">LEVEL</span>
+                <span class="stat-value" id="level-value">1</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">ANOMALIES</span>
+                <span class="stat-value" id="anomalies-value">0/10</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">TIME</span>
+                <span class="stat-value" id="time-value">60s</span>
+            </div>
+        </div>
+
+        <!-- Main Game Area -->
+        <div class="game-container">
+            <!-- Reactor Core -->
+            <div class="reactor-core" id="reactor-core">
+                <div class="core-inner">
+                    <div class="core-glow"></div>
+                    <div class="core-pulse"></div>
+                </div>
+                <div class="core-ring ring-1"></div>
+                <div class="core-ring ring-2"></div>
+                <div class="core-ring ring-3"></div>
+            </div>
+
+            <!-- Defense Grid -->
+            <div class="defense-grid">
+                <!-- Grid lines will be generated via JS -->
+            </div>
+
+            <!-- Quantum Anomalies -->
+            <div class="anomalies-container" id="anomalies-container">
+                <!-- Anomalies will be generated via JS -->
+            </div>
+
+            <!-- Defense Nodes -->
+            <div class="defense-nodes">
+                <!-- Nodes will be generated via JS -->
+            </div>
+
+            <!-- Particle Effects Container -->
+            <div class="particles-container" id="particles-container"></div>
+        </div>
+
+        <!-- Controls Panel -->
+        <div class="controls-panel">
+            <div class="controls-left">
+                <button class="control-btn" id="btn-slow">
+                    <i class="fas fa-tachometer-alt"></i> SLOW TIME
+                </button>
+                <button class="control-btn" id="btn-shield">
+                    <i class="fas fa-shield-alt"></i> ENERGY SHIELD
+                </button>
+                <button class="control-btn" id="btn-blast">
+                    <i class="fas fa-bolt"></i> QUANTUM BLAST
+                </button>
+            </div>
+            <div class="controls-center">
+                <button class="control-btn main-btn" id="btn-pause">
+                    <i class="fas fa-pause"></i> PAUSE
+                </button>
+                <button class="control-btn main-btn" id="btn-start">
+                    <i class="fas fa-play"></i> START GAME
+                </button>
+                <button class="control-btn main-btn" id="btn-restart">
+                    <i class="fas fa-redo"></i> RESTART
+                </button>
+            </div>
+            <div class="controls-right">
+                <div class="volume-control">
+                    <i class="fas fa-volume-up"></i>
+                    <input type="range" id="volume-slider" min="0" max="100" value="70">
+                </div>
+                <button class="control-btn" id="btn-help">
+                    <i class="fas fa-question-circle"></i> HELP
+                </button>
+            </div>
+        </div>
+
+        <!-- Game Messages -->
+        <div class="game-message" id="game-message"></div>
+
+        <!-- Game Instructions Modal -->
+        <div class="modal" id="instructions-modal">
+            <div class="modal-content">
+                <h2><i class="fas fa-graduation-cap"></i> QUANTUM DEFENDER GUIDE</h2>
+                <div class="instructions">
+                    <div class="instruction">
+                        <h3><i class="fas fa-bullseye"></i> OBJECTIVE</h3>
+                        <p>Protect the reactor core from quantum anomalies. Each anomaly that reaches the core drains your energy. Eliminate all anomalies before time runs out.</p>
+                    </div>
+                    <div class="instruction">
+                        <h3><i class="fas fa-mouse-pointer"></i> CONTROLS</h3>
+                        <p><strong>CLICK</strong> on anomalies to eliminate them. <strong>CLICK AND DRAG</strong> defense nodes to connect them and create barriers.</p>
+                    </div>
+                    <div class="instruction">
+                        <h3><i class="fas fa-cogs"></i> ABILITIES</h3>
+                        <p><strong>SLOW TIME:</strong> Slows anomalies for 5 seconds.<br>
+                        <strong>ENERGY SHIELD:</strong> Protects the core for 8 seconds.<br>
+                        <strong>QUANTUM BLAST:</strong> Destroys all visible anomalies.</p>
+                    </div>
+                    <div class="instruction">
+                        <h3><i class="fas fa-chart-line"></i> SCORING</h3>
+                        <p>+10 points per anomaly destroyed. +50 for completing a level. Bonus points for remaining energy and time.</p>
+                    </div>
+                </div>
+                <button class="modal-close" id="close-instructions">BEGIN DEFENSE</button>
+            </div>
+        </div>
+
+        <!-- Game Over Modal -->
+        <div class="modal" id="gameover-modal">
+            <div class="modal-content">
+                <h2 id="gameover-title">MISSION <span class="success">SUCCESS</span></h2>
+                <div class="gameover-stats">
+                    <div class="gameover-stat">
+                        <span class="stat-label">FINAL SCORE</span>
+                        <span class="stat-value" id="final-score">0</span>
+                    </div>
+                    <div class="gameover-stat">
+                        <span class="stat-label">LEVELS COMPLETED</span>
+                        <span class="stat-value" id="final-level">0</span>
+                    </div>
+                    <div class="gameover-stat">
+                        <span class="stat-label">ANOMALIES DESTROYED</span>
+                        <span class="stat-value" id="final-anomalies">0</span>
+                    </div>
+                    <div class="gameover-stat">
+                        <span class="stat-label">ENERGY REMAINING</span>
+                        <span class="stat-value" id="final-energy">0%</span>
+                    </div>
+                </div>
+                <button class="modal-close" id="play-again">QUANTUM JUMP AGAIN</button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="game-footer">
+            <p>QUANTUM DEFENDER | Advanced CSS & JavaScript Game | Created for Portfolio</p>
+            <p class="tech-used">
+                <i class="fab fa-html5" title="HTML5"></i>
+                <i class="fab fa-css3-alt" title="CSS3"></i>
+                <i class="fab fa-js-square" title="JavaScript"></i>
+            </p>
+        </footer>
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="background-music" loop>
+        <source src="https://assets.mixkit.co/music/preview/mixkit-game-show-suspense-waiting-667.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="click-sound">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="explosion-sound">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-bomb-explosion-in-battle-2800.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="powerup-sound">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- JavaScript Files -->
+    <script src="particles.js"></script>
+    <script src="audio.js"></script>
+    <script src="levels.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
